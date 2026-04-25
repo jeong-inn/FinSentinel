@@ -2,15 +2,15 @@
 test_spc.py — SPC 모듈 단위 테스트
 """
 
-import sys
 import os
+import sys
+
 import numpy as np
 import pandas as pd
-import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from spc import calc_cpk, calc_ppk, control_chart_limits, western_electric_rules, analyze_spc
+from spc import analyze_spc, calc_cpk, control_chart_limits, western_electric_rules
 
 
 # ============================================================
