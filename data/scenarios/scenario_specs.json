@@ -1,0 +1,92 @@
+[
+    {
+      "scenario_id": "S1",
+      "description": "정상 거래 구간 — 이상 징후 없음",
+      "expected_final_result": "PASS",
+      "allowed_warning_ratio": 0.00,
+      "allowed_critical_ratio": 0.00,
+      "required_reason_keywords": [],
+      "recommended_action": "NO_ACTION"
+    },
+    {
+      "scenario_id": "S2",
+      "description": "거래금액 일시 스파이크 후 자가 회복",
+      "expected_final_result": "PASS_WITH_WARNING",
+      "allowed_warning_ratio": 0.10,
+      "allowed_critical_ratio": 0.00,
+      "required_reason_keywords": ["amount_spike"],
+      "recommended_action": "ENHANCED_MONITORING"
+    },
+    {
+      "scenario_id": "S3",
+      "description": "거래금액 지속 상승 — 고액 이상거래 의심 (자금세탁 패턴)",
+      "expected_final_result": "FAIL",
+      "allowed_warning_ratio": 0.85,
+      "allowed_critical_ratio": 0.00,
+      "required_reason_keywords": ["amount_high"],
+      "recommended_action": "STR_FILING"
+    },
+    {
+      "scenario_id": "S4",
+      "description": "시스템 처리시간 점진 증가 — 채널 성능 저하",
+      "expected_final_result": "PASS_WITH_WARNING",
+      "allowed_warning_ratio": 0.40,
+      "allowed_critical_ratio": 0.00,
+      "required_reason_keywords": ["processing_time_jump"],
+      "recommended_action": "ENHANCED_MONITORING"
+    },
+    {
+      "scenario_id": "S5",
+      "description": "반복 거래 에러 — 네트워크 장애 의심",
+      "expected_final_result": "PASS_WITH_WARNING",
+      "allowed_warning_ratio": 0.05,
+      "allowed_critical_ratio": 0.00,
+      "required_reason_keywords": ["tx_error_detected"],
+      "recommended_action": "NO_ACTION"
+    },
+    {
+      "scenario_id": "S6",
+      "description": "채널 FDS 응답 손실 — 거래 차단 필요",
+      "expected_final_result": "FAIL",
+      "allowed_warning_ratio": 0.00,
+      "allowed_critical_ratio": 0.00,
+      "required_reason_keywords": ["response_dropout"],
+      "recommended_action": "TRANSACTION_BLOCK"
+    },
+    {
+      "scenario_id": "S7",
+      "description": "시장 변동성 burst 후 자가 회복",
+      "expected_final_result": "PASS_WITH_WARNING",
+      "allowed_warning_ratio": 0.05,
+      "allowed_critical_ratio": 0.00,
+      "required_reason_keywords": ["amount_spike"],
+      "recommended_action": "ENHANCED_MONITORING"
+    },
+    {
+      "scenario_id": "S8",
+      "description": "복합 이상 — 거래금액+처리시간+에러+이상거래 플래그 동시 발생",
+      "expected_final_result": "FAIL",
+      "allowed_warning_ratio": 0.80,
+      "allowed_critical_ratio": 0.10,
+      "required_reason_keywords": ["amount_high", "processing_time_jump", "tx_error_detected", "fraud_event"],
+      "recommended_action": "EMERGENCY_HALT"
+    },
+    {
+      "scenario_id": "S9",
+      "description": "거래금액 이상 감지 후 재검증 통과 — CTR 검토 대상",
+      "expected_final_result": "PASS_WITH_WARNING",
+      "allowed_warning_ratio": 0.10,
+      "allowed_critical_ratio": 0.01,
+      "required_reason_keywords": ["amount_spike"],
+      "recommended_action": "CTR_REVIEW"
+    },
+    {
+      "scenario_id": "S10",
+      "description": "거래금액+처리시간 이상 후 회복 실패 — 긴급 중단",
+      "expected_final_result": "FAIL",
+      "allowed_warning_ratio": 0.70,
+      "allowed_critical_ratio": 0.20,
+      "required_reason_keywords": ["amount_high", "processing_time_jump", "tx_error_detected"],
+      "recommended_action": "EMERGENCY_HALT"
+    }
+  ]

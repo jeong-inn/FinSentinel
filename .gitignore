@@ -1,0 +1,25 @@
+# Docker volumes
+pgdata/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# 데이터 (processed는 재생성 가능)
+data/processed/
+
+# 환경변수
+.env
+*.env
+
+# IDE
+.vscode/
+.idea/
+*.DS_Store
+
+# pytest
+.pytest_cache/

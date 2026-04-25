@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install linter
+        run: pip install ruff
+
+      - name: Run linter
+        run: ruff check src/ tests/
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: finsentinel
+          POSTGRES_USER: finsentinel
+          POSTGRES_PASSWORD: finsentinel
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U finsentinel"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Initialize database
+        env:
+          PGPASSWORD: finsentinel
+        run: |
+          psql -h localhost -U finsentinel -d finsentinel -f db/init.sql
+
+      - name: Generate test data
+        run: python src/generate_logs.py
+
+      - name: Run pipeline
+        env:
+          DATABASE_URL: postgresql://finsentinel:finsentinel@localhost:5432/finsentinel
+        run: python src/main.py
+
+      - name: Run tests
+        run: python -m pytest tests/ -v --tb=short
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t finsentinel:latest .
+
+      - name: Verify Docker image
+        run: docker images finsentinel:latest
