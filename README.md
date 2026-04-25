@@ -29,9 +29,9 @@
 
 ## 개요
 
-FinSentinel은 한국 시중은행의 **이상거래탐지시스템(FDS, Fraud Detection System)** 운영 프로세스를 Python으로 구현한 파이프라인이다.
+FinSentinel은 한국 시중은행의 **이상거래탐지시스템(FDS, Fraud Detection System)** 운영 프로세스를 Python으로 구현한 파이프라인임.
 
-금융보안원 FDS 운영 가이드라인 및 특정금융거래정보법(KoFIU)의 STR·CTR 보고 체계를 반영하여, 합성 거래 데이터 생성부터 탐지·판정·야간배치·규제 리포팅까지 **11단계 파이프라인**으로 구성된다.
+금융보안원 FDS 운영 가이드라인 및 특정금융거래정보법(KoFIU)의 STR·CTR 보고 체계를 반영하여, 합성 거래 데이터 생성부터 탐지·판정·야간배치·규제 리포팅까지 **11단계 파이프라인**으로 구성됨.
 
 ```
 10,000건 합성 거래  →  9개 FDS 규칙 탐지  →  상태 머신  →  최종 판정
@@ -158,7 +158,7 @@ FinSentinel/
 
 ## FDS 탐지 규칙
 
-총 **9개 규칙**을 numpy 벡터 연산으로 적용한다. iterrows 대신 boolean mask를 사용하여 10,000건 기준 약 50배 성능을 확보했다.
+총 **9개 규칙**을 numpy 벡터 연산으로 적용함. iterrows 대신 boolean mask를 사용하여 10,000건 기준 약 50배 성능을 확보함.
 
 | ID | 규칙명 | 조건 | 비고 |
 |----|--------|------|------|
@@ -174,7 +174,7 @@ FinSentinel/
 
 ### 대응 액션 체계
 
-탐지 결과에 따라 금융보안원·KoFIU 가이드라인 기반 대응 액션이 결정된다.
+탐지 결과에 따라 금융보안원·KoFIU 가이드라인 기반 대응 액션이 결정됨.
 
 ```
 NO_ACTION → ENHANCED_MONITORING → CTR_REVIEW → STR_REVIEW
@@ -194,7 +194,7 @@ NO_ACTION → ENHANCED_MONITORING → CTR_REVIEW → STR_REVIEW
 
 ## 시나리오 설계
 
-10개 시나리오로 FDS 파이프라인의 탐지 능력을 검증한다. 각 시나리오는 1,000건의 거래로 구성된다(1 Branch × 5 Accounts × 8 Channels × 25 tx).
+10개 시나리오로 FDS 파이프라인의 탐지 능력을 검증함. 각 시나리오는 1,000건의 거래로 구성됨(1 Branch × 5 Accounts × 8 Channels × 25 tx).
 
 | 시나리오 | 패턴 | 최종 판정 | 권고 액션 |
 |----------|------|-----------|-----------|
@@ -210,13 +210,13 @@ NO_ACTION → ENHANCED_MONITORING → CTR_REVIEW → STR_REVIEW
 | S10 | 회복 실패 | FAIL | EMERGENCY_HALT |
 
 - 전체 10,000건 거래 / 이상 탐지율 약 29.8%
-- 시나리오 검증 매치율 7/10 (S8·S9·S10은 임계값 민감도로 인한 자연 오차)
+- 시나리오 검증 매치율 7/10 — S8·S9·S10은 임계값 민감도로 인한 자연 오차임
 
 ---
 
 ## 야간배치
 
-실제 시중은행의 야간배치(Nightly Batch) 프로세스를 4단계로 구현했다. 은행에서는 Spring Batch + 계정계 원장을 사용하지만, 여기서는 pandas로 핵심 로직을 재현한다.
+실제 시중은행의 야간배치(Nightly Batch) 프로세스를 4단계로 구현함. 은행에서는 Spring Batch + 계정계 원장을 사용하지만, 여기서는 pandas로 핵심 로직을 재현함.
 
 ```
 일일결산 → 한도점검 → STR 후보 추출 → 정합성 검증
@@ -233,7 +233,7 @@ NO_ACTION → ENHANCED_MONITORING → CTR_REVIEW → STR_REVIEW
 
 ## 데이터 품질 관리
 
-BIS Basel II/III 및 금융감독원 데이터 품질 가이드라인 기반의 **4차원 DQM**을 수행한다.
+BIS Basel II/III 및 금융감독원 데이터 품질 가이드라인 기반의 **4차원 DQM**을 수행함.
 
 | 차원 | 가중치 | 검증 내용 |
 |------|--------|-----------|
